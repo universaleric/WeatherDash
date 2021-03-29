@@ -30,26 +30,30 @@ let formSubmitHandler = function (event) {
 })}
 
 let displayCities = function (data, city) {
-    if (data.length === 0) {
+    if (data.list.length === 0) {
       cityContainerEl.textContent = 'No cities found.';
       return;
     }
   
     citySearchTerm.textContent = city;
   
-    for (let i = 0; i < data.length; i++) {
+  for (let i = 4; i < data.list.length; i=i+8) {
       let forecast = {
         date: data.list[i].dt_txt,
-        icon: data.list[i].weather[i].icon,
-        temp: "Temp: " + data.list[i].main.temp + "F" + "&#8451;",
+        icon: "http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png",
+        temp: "Temp: " + (((data.list[i].main.temp) - 273.15) * 9/5 + 32).toFixed(2) + "F°",
         humidity: "Humidity: " + data.list[i].main.humidity + "%"
-      }
+      };
 
-      console.log(forecast);
-      cityContainerEl.textContent = forecast;
-  
-    }
+      let output = "";
+      for (const f in forecast) {
+        output += forecast[f] + " <br>";
+        };
+
+      console.log(output);
+      document.getElementById("cities-container").innerHTML = output;
   };
+};
 
 
 
