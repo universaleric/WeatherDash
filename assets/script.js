@@ -27,7 +27,7 @@ let formSubmitHandler = function (event) {
         console.log(data);
         displayCities(data, city);
 
-})}
+})};
 
 let displayCities = function (data, city) {
     if (data.list.length === 0) {
@@ -36,7 +36,9 @@ let displayCities = function (data, city) {
     }
   
     citySearchTerm.textContent = city;
-  
+
+
+let output = [];
   for (let i = 4; i < data.list.length; i=i+8) {
       let forecast = {
         date: data.list[i].dt_txt,
@@ -45,14 +47,45 @@ let displayCities = function (data, city) {
         humidity: "Humidity: " + data.list[i].main.humidity + "%"
       };
 
-      let output = "";
-      for (const f in forecast) {
-        output += forecast[f] + " <br>";
-        };
-
+      
+      output = output.concat(forecast);
       console.log(output);
-      document.getElementById("cities-container").innerHTML = output;
   };
+
+  for (let i = 0; i < output.length; i++) {
+      let newDiv = document.createElement("div");
+      newDiv.setAttribute('class', 'card');
+      newDiv.setAttribute('id', 'card'+[i]);
+
+      if(output[i].date){
+        let dateEl = document.createElement('h6');
+        let dateSource = output[i].date;
+        console.log(dateEl);
+        dateEl.innerHTML = dateSource;
+        newDiv.appendChild(dateEl);
+    };
+
+      if(output[i].icon){
+        let img = document.createElement("img");
+        let imageSource = output[i].icon;
+        console.log(imageSource);
+        img.src = imageSource;
+        console.log(img);
+        newDiv.appendChild(img);
+      };
+
+      if(output[i].temp){
+          let tempEl = document.createElement('h6');
+          let tempSource = output[i].temp;
+          console.log(tempEl);
+          tempEl.innerHTML = tempSource;
+          newDiv.appendChild(tempEl);
+      };
+
+      document.getElementById("cardContainer").appendChild(newDiv);
+    
+  };
+
 };
 
 
