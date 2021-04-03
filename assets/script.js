@@ -2,6 +2,9 @@ let submitEl = document.querySelector('#submit');
 let searchInputEl = document.querySelector('#search');
 let cityContainerEl = document.querySelector('#cities-container');
 let citySearchTerm = document.querySelector('#city-search-term');
+const container = document.querySelector('#cardContainer');
+let resetCounter = 0;
+
 
 let formSubmitHandler = function (event) {
     event.preventDefault();
@@ -36,10 +39,29 @@ let displayCities = function (data, city) {
     }
   
     citySearchTerm.textContent = city;
+    if(resetCounter = 1) {
+    removeAllChildNodes(container);
+    resetCounter--;
+    }
 
+  
 
 let output = [];
-  for (let i = 4; i < data.list.length; i=i+8) {
+let checkDate = false;
+
+
+  for (let i = 0; i < data.list.length; i++) {
+
+    do {let getDate = data.list[i].dt_txt;
+      console.log(getDate);
+      checkDate = !getDate.includes("09:00:00");
+      console.log(checkDate);
+      i++;
+      console.log(i);
+    } while (checkDate = true);
+
+    
+
       let forecast = {
         date: data.list[i].dt_txt,
         icon: "http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png",
@@ -82,11 +104,27 @@ let output = [];
           newDiv.appendChild(tempEl);
       };
 
+      if(output[i].humidity){
+          let humidityEl = document.createElement('h6');
+          let humiditySource = output[i].humidity;
+          console.log(humidityEl);
+          humidityEl.innerHTML = humiditySource;
+          newDiv.appendChild(humidityEl);
+      };
+
       document.getElementById("cardContainer").appendChild(newDiv);
-    
+      
   };
 
+  resetCounter++;
+
 };
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
+}
 
 
 
