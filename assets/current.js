@@ -1,119 +1,115 @@
+const currentContainer = document.querySelector('#cardCurrentContainer');
+
 let getCoordinates = function (city) {
     let searchUrlCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=4ef642cec6cde7575c1b34b64a4a0ad7";
   
     fetch(searchUrlCurrent)
     .then(response => response.json())
     .then(function(data){
-        console.log(data);
+        // console.log(data);
     let lat = data.coord.lat;
-    console.log(lat);
+    // console.log(lat);
     let lon = data.coord.lon;
-    console.log(lon);
+    // console.log(lon);
         getCurrentCity(lat, lon);
+        getCurrentWeather(data, city);
 })}
 
 
 
 let getCurrentCity = function (lat, lon) {
-    let searchUrl = "https://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&appid=4ef642cec6cde7575c1b34b64a4a0ad7";
+    let searchUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&appid=4ef642cec6cde7575c1b34b64a4a0ad7";
   
     fetch(searchUrl)
     .then(response => response.json())
-    .then(function(data){
-        console.log(data);
-        // displayCurrentCities(data, city);
+    .then(function(dataOneCall){
+        // console.log(dataOneCall);
+        getCurrentUVI(dataOneCall);
+        
 
 })};
 
-// let displayCurrentCities = function (data, city) {
-//     if (data.list.length === 0) {
-//       cityContainerEl.textContent = 'No cities found.';
-//       return;
-//     }
+let getCurrentWeather = function (data) {
   
-//     citySearchTerm.textContent = city;
-//     if(resetCounter = 1) {
-//     removeAllChildNodes(container);
-//     resetCounter--;
-//     }
+let currentDate = luxon.DateTime.now().toLocaleString();    
 
-  
-
-// let output = [];
-// let checkDate = false;
-
-
-//   for (let i = 0; i < 38; i++) {
-
-//     do {let getDate = data.list[i].dt_txt;
-//       // console.log(getDate);
-//       checkDate = !getDate.includes("09:00:00");
-//       // console.log(checkDate);
-//       i++;
-//       // console.log(i);
-//     } while (checkDate);
+    let weather = {
+    date: currentDate,
+    icon: "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png",
+    temp: "Temp: " + (((data.main.temp) - 273.15) * 9/5 + 32).toFixed(2) + "F°",
+    humidity: "Humidity: " + data.main.humidity + "%",
+    wind: "Wind Speed: " + data.wind.speed + "mph"
     
+    };
+    console.log(weather);
+    displayCurrentWeather(weather);
+}
 
-//       let forecast = {
-//         date: data.list[i].dt_txt,
-//         icon: "http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png",
-//         temp: "Temp: " + (((data.list[i].main.temp) - 273.15) * 9/5 + 32).toFixed(2) + "F°",
-//         humidity: "Humidity: " + data.list[i].main.humidity + "%"
-//       };
 
+
+let getCurrentUVI = function (dataOneCall) {
+    let uvi = {
+        uvi: "UV Index: " + dataOneCall.daily[0].uvi 
+    };
+    console.log(uvi);
+
+}
       
-//       output = output.concat(forecast);
-//       console.log(output);
-//   };
-
-//   for (let i = 0; i < output.length; i++) {
-//       let newDiv = document.createElement("div");
-//       newDiv.setAttribute('class', 'card');
-//       newDiv.setAttribute('id', 'card'+[i]);
-
-//       if(output[i].date){
-//         let dateEl = document.createElement('h6');
-//         let dateSource = output[i].date;
-//         console.log(dateEl);
-//         dateEl.innerHTML = dateSource;
-//         newDiv.appendChild(dateEl);
-//     };
-
-//       if(output[i].icon){
-//         let img = document.createElement("img");
-//         let imageSource = output[i].icon;
-//         console.log(imageSource);
-//         img.src = imageSource;
-//         console.log(img);
-//         newDiv.appendChild(img);
-//       };
-
-//       if(output[i].temp){
-//           let tempEl = document.createElement('h6');
-//           let tempSource = output[i].temp;
-//           console.log(tempEl);
-//           tempEl.innerHTML = tempSource;
-//           newDiv.appendChild(tempEl);
-//       };
-
-//       if(output[i].humidity){
-//           let humidityEl = document.createElement('h6');
-//           let humiditySource = output[i].humidity;
-//           console.log(humidityEl);
-//           humidityEl.innerHTML = humiditySource;
-//           newDiv.appendChild(humidityEl);
-//       };
-
-//       document.getElementById("cardContainer").appendChild(newDiv);
+let displayCurrentWeather = function (weather) {
       
-//   };
+    if(resetCounter = 1) {
+        removeAllChildNodes(currentContainer);
+        resetCounter--;
+        }
 
-//   resetCounter++;
+    let newWeatherDiv = document.createElement("div");
+    newWeatherDiv.setAttribute('class', 'card');
+    newWeatherDiv.setAttribute('id', 'currentWeather');
 
-// };
+    let displayCurrent = document.createElement('h2')  
+    let currentDateEl = document.createElement('h4');
+    let curDateSource = weather.date;
+    // console.log(currentDateEl);
+    displayCurrent.innerHTML = "Current Weather"
+    currentDateEl.innerHTML = curDateSource;
+    newWeatherDiv.appendChild(displayCurrent);
+    newWeatherDiv.appendChild(currentDateEl);
 
-// function removeAllChildNodes(parent) {
-//   while (parent.firstChild) {
-//       parent.removeChild(parent.firstChild);
-//   }
-// }
+
+      if(weather.icon){
+        let img = document.createElement("img");
+        let imageSource = weather.icon;
+        // console.log(imageSource);
+        img.src = imageSource;
+        // console.log(img);
+        newWeatherDiv.appendChild(img);
+      };
+
+      if(weather.temp){
+          let tempEl = document.createElement('h4');
+          let tempSource = weather.temp;
+          console.log(tempEl);
+          tempEl.innerHTML = tempSource;
+          newWeatherDiv.appendChild(tempEl);
+      };
+
+      if(weather.humidity){
+          let humidityEl = document.createElement('h4');
+          let humiditySource = weather.humidity;
+          console.log(humidityEl);
+          humidityEl.innerHTML = humiditySource;
+          newWeatherDiv.appendChild(humidityEl);
+      };
+
+      document.getElementById("cardCurrentContainer").appendChild(newWeatherDiv);
+
+  resetCounter++;
+
+
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
+}
+} 

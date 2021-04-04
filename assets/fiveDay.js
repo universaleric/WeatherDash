@@ -1,6 +1,5 @@
 let submitEl = document.querySelector('#submit');
 let searchInputEl = document.querySelector('#search');
-let cityContainerEl = document.querySelector('#cities-container');
 let citySearchTerm = document.querySelector('#city-search-term');
 const container = document.querySelector('#cardContainer');
 let resetCounter = 0;
@@ -15,7 +14,6 @@ let formSubmitHandler = function (event) {
       getCity(city);
       getCoordinates(city);
   
-      cityContainerEl.textContent = '';
       searchInputEl.value = '';
     } else {
       alert('Please enter a city name.');
@@ -35,7 +33,7 @@ let formSubmitHandler = function (event) {
 
 let displayCities = function (data, city) {
     if (data.list.length === 0) {
-      cityContainerEl.textContent = 'No cities found.';
+      alert('No cities found.');
       return;
     }
   
