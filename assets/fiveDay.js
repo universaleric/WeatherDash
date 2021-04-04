@@ -10,9 +10,10 @@ let formSubmitHandler = function (event) {
     event.preventDefault();
   
     let city = searchInputEl.value.trim();
-    console.log(city);
+    // console.log(city);
     if (city) {
       getCity(city);
+      getCoordinates(city);
   
       cityContainerEl.textContent = '';
       searchInputEl.value = '';
@@ -27,7 +28,7 @@ let formSubmitHandler = function (event) {
     fetch(searchUrl)
     .then(response => response.json())
     .then(function(data){
-        console.log(data);
+        // console.log(data);
         displayCities(data, city);
 
 })};
@@ -46,21 +47,21 @@ let displayCities = function (data, city) {
 
   
 
-let output = [];
-let checkDate = false;
+  let output = [];
+  let checkDate = true;
 
 
-  for (let i = 0; i < data.list.length; i++) {
+  for (let i = 0; i < 38; i++) {
 
-    do {let getDate = data.list[i].dt_txt;
-      console.log(getDate);
+    while (checkDate && (output.length < 5)) {
+      let getDate = data.list[i].dt_txt;
+      // console.log(getDate);
       checkDate = !getDate.includes("09:00:00");
-      console.log(checkDate);
+      // console.log(checkDate);
       i++;
-      console.log(i);
-    } while (checkDate = true);
-
-    
+      // console.log(i);
+    }
+    checkDate = true;
 
       let forecast = {
         date: data.list[i].dt_txt,
@@ -71,7 +72,11 @@ let checkDate = false;
 
       
       output = output.concat(forecast);
-      console.log(output);
+      // console.log(output);
+
+      if(output.length > 4) {
+        break;
+      }
   };
 
   for (let i = 0; i < output.length; i++) {
@@ -82,7 +87,7 @@ let checkDate = false;
       if(output[i].date){
         let dateEl = document.createElement('h6');
         let dateSource = output[i].date;
-        console.log(dateEl);
+        // console.log(dateEl);
         dateEl.innerHTML = dateSource;
         newDiv.appendChild(dateEl);
     };
@@ -90,16 +95,16 @@ let checkDate = false;
       if(output[i].icon){
         let img = document.createElement("img");
         let imageSource = output[i].icon;
-        console.log(imageSource);
+        // console.log(imageSource);
         img.src = imageSource;
-        console.log(img);
+        // console.log(img);
         newDiv.appendChild(img);
       };
 
       if(output[i].temp){
           let tempEl = document.createElement('h6');
           let tempSource = output[i].temp;
-          console.log(tempEl);
+          // console.log(tempEl);
           tempEl.innerHTML = tempSource;
           newDiv.appendChild(tempEl);
       };
@@ -107,7 +112,7 @@ let checkDate = false;
       if(output[i].humidity){
           let humidityEl = document.createElement('h6');
           let humiditySource = output[i].humidity;
-          console.log(humidityEl);
+          // console.log(humidityEl);
           humidityEl.innerHTML = humiditySource;
           newDiv.appendChild(humidityEl);
       };
@@ -117,6 +122,7 @@ let checkDate = false;
   };
 
   resetCounter++;
+
 
 };
 
@@ -128,12 +134,6 @@ function removeAllChildNodes(parent) {
 
 
 
-// fetch("https://api.openweathermap.org/data/2.5/weather?q=dallas&appid=4ef642cec6cde7575c1b34b64a4a0ad7")
-// .then(response => response.json())
-// .then(function(data){
 
-// console.log(data);
-
-// });
 
 submitEl.addEventListener("click", formSubmitHandler);
