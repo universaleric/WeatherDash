@@ -65,14 +65,11 @@ let displayCurrentWeather = function (weather) {
     let newWeatherDiv = document.createElement("div");
     newWeatherDiv.setAttribute('class', 'card');
     newWeatherDiv.setAttribute('id', 'currentWeather');
-
-    let displayCurrent = document.createElement('h2')  
+ 
     let currentDateEl = document.createElement('h4');
     let curDateSource = weather.date;
     // console.log(currentDateEl);
-    displayCurrent.innerHTML = "Current Weather"
     currentDateEl.innerHTML = curDateSource;
-    newWeatherDiv.appendChild(displayCurrent);
     newWeatherDiv.appendChild(currentDateEl);
 
 

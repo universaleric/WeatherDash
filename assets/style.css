@@ -94,6 +94,10 @@
   .icon-success {
     color: rgb(29, 153, 255);
   }
+
+  .subtitle {
+    margin-bottom: 20px;
+  }
   
   /* CARDS */
 #cardContainer {

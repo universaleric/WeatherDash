@@ -1,14 +1,36 @@
-let submitEl = document.querySelector('#submit');
+let submitEl = document.querySelector('.btn');
 let searchInputEl = document.querySelector('#search');
 let citySearchTerm = document.querySelector('#city-search-term');
 const container = document.querySelector('#cardContainer');
+const searchHist = document.querySelector('#searchHistory');
 let resetCounter = 0;
 
+let history = localStorage.getItem("searchHistory") || [];
+
+let searchHistory = function() {
+  for (let i = 0; i < history.length; i++) {
+    let newDiv = document.createElement("button");
+    newDiv.setAttribute('id', 'submit');
+    newDiv.setAttribute('class', 'btn');
+    newDiv.setAttribute('class', 'btn-outline-success');
+    newDiv.setAttribute('class', 'my-2');
+    newDiv.setAttribute('class', 'my-sm-0');
+    newDiv.setAttribute('type', 'submit');
+    newDiv.innerHTML = history;
+    console.log(history)
+    document.getElementById("searchHistory").appendChild(newDiv);
+  }
+}
 
 let formSubmitHandler = function (event) {
     event.preventDefault();
+    
   
     let city = searchInputEl.value.trim();
+    history.push(city);
+    localStorage.setItem("searchHistory", history);
+    console.log(localStorage);
+    searchHistory();
     // console.log(city);
     if (city) {
       getCity(city);
@@ -131,7 +153,6 @@ function removeAllChildNodes(parent) {
 }
 
 
-
-
-
 submitEl.addEventListener("click", formSubmitHandler);
+
+
