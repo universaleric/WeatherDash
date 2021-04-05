@@ -152,6 +152,20 @@
     text-transform: capitalize;
   }
   
+  #uviLow {
+    background-color: rgb(26, 87, 26);
+    color: white;
+  }
+
+  #uviMed {
+    background-color: rgb(223, 223, 70);
+  }
+
+  #uviHigh {
+    background-color: rgb(136, 9, 9);
+    color: white;
+  }
+
   img {
     height: 30px;
     width: 30px;

@@ -23,7 +23,7 @@ let getCurrentCity = function (lat, lon) {
     fetch(searchUrl)
     .then(response => response.json())
     .then(function(dataOneCall){
-        console.log(dataOneCall);
+        // console.log(dataOneCall);
         getCurrentUVI(dataOneCall);
         
 
@@ -41,16 +41,16 @@ let currentDate = luxon.DateTime.now().toLocaleString();
     wind: "Wind Speed: " + data.wind.speed + "mph"
     
     };
-    console.log(weather);
+    // console.log(weather);
     displayCurrentWeather(weather);
 }
 
 
 let getCurrentUVI = function (dataOneCall) {
         uvi = {
-        uvi: "UV Index: " + dataOneCall.daily[0].uvi 
+        uvi: dataOneCall.daily[0].uvi 
     };
-    console.log(uvi);
+    // console.log(uvi);
     displayUVI(uvi);
 }
 
@@ -88,7 +88,7 @@ let displayCurrentWeather = function (weather) {
       if(weather.temp){
           let tempEl = document.createElement('h4');
           let tempSource = weather.temp;
-          console.log(tempEl);
+        //   console.log(tempEl);
           tempEl.innerHTML = tempSource;
           newWeatherDiv.appendChild(tempEl);
       };
@@ -96,7 +96,7 @@ let displayCurrentWeather = function (weather) {
       if(weather.humidity){
           let humidityEl = document.createElement('h4');
           let humiditySource = weather.humidity;
-          console.log(humidityEl);
+        //   console.log(humidityEl);
           humidityEl.innerHTML = humiditySource;
           newWeatherDiv.appendChild(humidityEl);
       };
@@ -104,7 +104,7 @@ let displayCurrentWeather = function (weather) {
       if(weather.wind){
         let windEl = document.createElement('h4');
         let windSource = weather.wind;
-        console.log(windEl);
+        // console.log(windEl);
         windEl.innerHTML = windSource;
         newWeatherDiv.appendChild(windEl);
     };
@@ -127,9 +127,19 @@ let displayUVI = function (uvi) {
     if(uvi.uvi){
         let newWeatherDiv = document.getElementById("currentWeather");
         let uviEl = document.createElement('h4');
+        uviEl.setAttribute('id', 'uvi');
         let uviSource = uvi.uvi;
-        console.log(uviEl);
-        uviEl.innerHTML = uviSource;
+        // console.log(uviEl);
+        uviEl.innerHTML = "UV Index: " + uviSource;
+        if(uviSource < 3) {
+            uviEl.setAttribute('id', 'uviLow');
+        }
+        else if (uviSource < 5) {
+            uviEl.setAttribute('id', 'uviMed');
+        }
+        else {
+            uviEl.setAttribute('id', 'uviHigh');
+        }
         newWeatherDiv.appendChild(uviEl);
 }
 }
