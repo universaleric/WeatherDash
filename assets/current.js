@@ -23,7 +23,7 @@ let getCurrentCity = function (lat, lon) {
     fetch(searchUrl)
     .then(response => response.json())
     .then(function(dataOneCall){
-        // console.log(dataOneCall);
+        console.log(dataOneCall);
         getCurrentUVI(dataOneCall);
         
 
@@ -46,17 +46,17 @@ let currentDate = luxon.DateTime.now().toLocaleString();
 }
 
 
-
 let getCurrentUVI = function (dataOneCall) {
-    let uvi = {
+        uvi = {
         uvi: "UV Index: " + dataOneCall.daily[0].uvi 
     };
     console.log(uvi);
-
+    displayUVI(uvi);
 }
+
       
-let displayCurrentWeather = function (weather) {
-      
+let displayCurrentWeather = function (weather) {  
+
     if(resetCounter = 1) {
         removeAllChildNodes(currentContainer);
         resetCounter--;
@@ -101,6 +101,14 @@ let displayCurrentWeather = function (weather) {
           newWeatherDiv.appendChild(humidityEl);
       };
 
+      if(weather.wind){
+        let windEl = document.createElement('h4');
+        let windSource = weather.wind;
+        console.log(windEl);
+        windEl.innerHTML = windSource;
+        newWeatherDiv.appendChild(windEl);
+    };
+
       document.getElementById("cardCurrentContainer").appendChild(newWeatherDiv);
 
   resetCounter++;
@@ -112,4 +120,16 @@ function removeAllChildNodes(parent) {
       parent.removeChild(parent.firstChild);
   }
 }
-} 
+}
+
+
+let displayUVI = function (uvi) {
+    if(uvi.uvi){
+        let newWeatherDiv = document.getElementById("currentWeather");
+        let uviEl = document.createElement('h4');
+        let uviSource = uvi.uvi;
+        console.log(uviEl);
+        uviEl.innerHTML = uviSource;
+        newWeatherDiv.appendChild(uviEl);
+}
+}
