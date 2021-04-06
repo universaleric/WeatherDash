@@ -5,6 +5,7 @@ const container = document.querySelector('#cardContainer');
 const searchHist = document.querySelector('#searchHistory');
 let resetCounter = 0;
 
+
 let history = localStorage.getItem("searchHistory") || [];
 
 let searchHistory = function() {
@@ -16,8 +17,8 @@ let searchHistory = function() {
     newDiv.setAttribute('class', 'my-2');
     newDiv.setAttribute('class', 'my-sm-0');
     newDiv.setAttribute('type', 'submit');
-    newDiv.innerHTML = history;
-    console.log(history)
+    newDiv.innerHTML = history[i];
+    // console.log(history)
     document.getElementById("searchHistory").appendChild(newDiv);
   }
 }
@@ -28,6 +29,7 @@ let formSubmitHandler = function (event) {
   
     let city = searchInputEl.value.trim();
     history.push(city);
+    console.log(history);
     localStorage.setItem("searchHistory", history);
     console.log(localStorage);
     searchHistory();
