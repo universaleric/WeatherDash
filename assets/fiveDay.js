@@ -4,9 +4,19 @@ let citySearchTerm = document.querySelector('#city-search-term');
 const container = document.querySelector('#cardContainer');
 const searchHist = document.querySelector('#searchHistory');
 let resetCounter = 0;
+let city = "";
+let history;
 
 
-let history = localStorage.getItem("searchHistory") || [];
+let historyStr = localStorage.getItem("searchHistory");
+if(historyStr){
+  history = JSON.parse(historyStr);
+  // console.log(typeof history);
+}
+else{
+  history = [];
+}
+
 
 let searchHistory = function() {
   for (let i = 0; i < history.length; i++) {
@@ -23,16 +33,29 @@ let searchHistory = function() {
   }
 }
 
+let newHistory = function() {
+  let newDiv = document.createElement("button");
+    newDiv.setAttribute('id', 'submit');
+    newDiv.setAttribute('class', 'btn');
+    newDiv.setAttribute('class', 'btn-outline-success');
+    newDiv.setAttribute('class', 'my-2');
+    newDiv.setAttribute('class', 'my-sm-0');
+    newDiv.setAttribute('type', 'submit');
+    newDiv.innerHTML = city;
+    // console.log(history)
+    document.getElementById("searchHistory").appendChild(newDiv);
+}
+
 let formSubmitHandler = function (event) {
     event.preventDefault();
     
   
-    let city = searchInputEl.value.trim();
+    city = searchInputEl.value.trim();
     history.push(city);
     console.log(history);
-    localStorage.setItem("searchHistory", history);
+    localStorage.setItem("searchHistory", JSON.stringify(history));
     console.log(localStorage);
-    searchHistory();
+    newHistory();
     // console.log(city);
     if (city) {
       getCity(city);
@@ -154,7 +177,7 @@ function removeAllChildNodes(parent) {
   }
 }
 
-
+searchHistory();
 submitEl.addEventListener("click", formSubmitHandler);
 
 
