@@ -152,6 +152,7 @@
     border-radius: var(--border-radius);
   }
 
+
   #city-search-term {
     text-transform: capitalize;
   }

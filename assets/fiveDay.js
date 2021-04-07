@@ -6,6 +6,7 @@ const searchHist = document.querySelector('#searchHistory');
 let resetCounter = 0;
 let city = "";
 let history;
+let clickHistory = [];
 
 
 let historyStr = localStorage.getItem("searchHistory");
@@ -21,29 +22,49 @@ else{
 let searchHistory = function() {
   for (let i = 0; i < history.length; i++) {
     let newDiv = document.createElement("button");
-    newDiv.setAttribute('id', 'submit');
+    newDiv.setAttribute('class', 'clickSearch');
     newDiv.setAttribute('class', 'btn');
     newDiv.setAttribute('class', 'btn-outline-success');
     newDiv.setAttribute('class', 'my-2');
     newDiv.setAttribute('class', 'my-sm-0');
     newDiv.setAttribute('type', 'submit');
+    newDiv.setAttribute('id', history[i]);
     newDiv.innerHTML = history[i];
     // console.log(history)
     document.getElementById("searchHistory").appendChild(newDiv);
+
+
+    document.getElementById(history[i]).addEventListener("click", function(event) {
+      event.preventDefault();
+      getCity(history[i]);
+      getCoordinates(history[i]);
+    })
   }
 }
 
 let newHistory = function() {
+  
   let newDiv = document.createElement("button");
-    newDiv.setAttribute('id', 'submit');
-    newDiv.setAttribute('class', 'btn');
-    newDiv.setAttribute('class', 'btn-outline-success');
-    newDiv.setAttribute('class', 'my-2');
-    newDiv.setAttribute('class', 'my-sm-0');
-    newDiv.setAttribute('type', 'submit');
-    newDiv.innerHTML = city;
-    // console.log(history)
-    document.getElementById("searchHistory").appendChild(newDiv);
+  newDiv.setAttribute('class', 'clickSearch');
+  newDiv.setAttribute('class', 'btn');
+  newDiv.setAttribute('class', 'btn-outline-success');
+  newDiv.setAttribute('class', 'my-2');
+  newDiv.setAttribute('class', 'my-sm-0');
+  newDiv.setAttribute('type', 'submit');
+  newDiv.setAttribute('id', city);
+  newDiv.innerHTML = city;
+  // console.log(clickHistory)
+  document.getElementById("searchHistory").appendChild(newDiv);
+  
+  
+  clickHistory.push(city);
+  for (let i = 0; i < clickHistory.length; i++) {
+    document.getElementById(clickHistory[i]).addEventListener("click", function(event) {
+      event.preventDefault();
+      getCity(clickHistory[i]);
+      getCoordinates(clickHistory[i]);
+    })
+  }
 }
 
 let formSubmitHandler = function (event) {
@@ -179,5 +200,3 @@ function removeAllChildNodes(parent) {
 
 searchHistory();
 submitEl.addEventListener("click", formSubmitHandler);
-
-
