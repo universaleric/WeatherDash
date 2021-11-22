@@ -2,7 +2,9 @@
 
 ### Description
 
-Weather Dashboard
+<img src="assets\WeatherDash.jpg"
+     alt="Screen Shot"
+     style="height: 200px;" />
 
 ## Table of Contents
 
